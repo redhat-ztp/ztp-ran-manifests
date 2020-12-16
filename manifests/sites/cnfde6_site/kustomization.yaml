@@ -10,3 +10,6 @@ resources:
   - 07_sriov_network_policy.yaml
   - 08_sriov_network_policy_placementbinding.yaml
   - 09_sriov_network_policy_placementrule.yaml
+  - 10_testpmd_pod_policy.yaml
+  - 11_testpmd_pod_policy_placementbinding.yaml
+  - 12_testpmd_pod_policy_placementrule.yaml

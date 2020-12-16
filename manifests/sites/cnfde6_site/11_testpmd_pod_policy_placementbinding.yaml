@@ -1,0 +1,13 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: PlacementBinding
+metadata:
+  name: binding-policy-cnfde6-site-testpmd-pod
+  namespace: cnfde6-site-subscription
+placementRef:
+  name: placement-policy-cnfde6-site-testpmd-pod
+  kind: PlacementRule
+  apiGroup: apps.open-cluster-management.io
+subjects:
+- name: policy-cnfde6-site-testpmd-pod
+  kind: Policy
+  apiGroup: policy.open-cluster-management.io
