@@ -1,0 +1,113 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: cnfde6-site-sriov-nnode-policy
+  namespace: cnfde6-site-subscription
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: cnfde6-site-sriov-nnode-policy-config
+        spec:
+          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: low
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["*"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetworkNodePolicy
+                metadata:
+                  name: cnfde6-nic1port1
+                  namespace: openshift-sriov-network-operator
+                spec:
+                  # This works for Intel based NICs.
+                  # For Mellanox please change to:
+                  #     deviceType: netdevice
+                  #     isRdma: true
+                  deviceType: vfio-pci
+                  isRdma: false
+                  nicSelector:
+                    # The exact physical function name must match the hardware used    
+                    pfNames: ["ens5f0"]
+                  nodeSelector:
+                    node-role.kubernetes.io/worker-du: ""
+                  numVfs: 4
+                  priority: 10
+                  resourceName: nic1port1
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetworkNodePolicy
+                metadata:
+                  name: cnfde6-nic1port2
+                  namespace: openshift-sriov-network-operator
+                spec:
+                  # This works for Intel based NICs.
+                  # For Mellanox please change to:
+                  #     deviceType: netdevice
+                  #     isRdma: true
+                  deviceType: vfio-pci
+                  isRdma: false
+                  nicSelector:
+                    # The exact physical function name must match the hardware used    
+                    pfNames: ["ens5f1"]
+                  nodeSelector:
+                    node-role.kubernetes.io/worker-du: ""
+                  numVfs: 4
+                  priority: 10
+                  resourceName: nic1port2
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetworkNodePolicy
+                metadata:
+                  name: cnfde6-nic2port1
+                  namespace: openshift-sriov-network-operator
+                spec:
+                  # This works for Intel based NICs.
+                  # For Mellanox please change to:
+                  #     deviceType: netdevice
+                  #     isRdma: true
+                  deviceType: vfio-pci
+                  isRdma: false
+                  nicSelector:
+                    # The exact physical function name must match the hardware used    
+                    pfNames: ["ens5f0"]
+                  nodeSelector:
+                    node-role.kubernetes.io/worker-du: ""
+                  numVfs: 4
+                  priority: 10
+                  resourceName: nic2port1
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetworkNodePolicy
+                metadata:
+                  name: cnfde6-nic2port2
+                  namespace: openshift-sriov-network-operator
+                spec:
+                  # This works for Intel based NICs.
+                  # For Mellanox please change to:
+                  #     deviceType: netdevice
+                  #     isRdma: true
+                  deviceType: vfio-pci
+                  isRdma: false
+                  nicSelector:
+                    # The exact physical function name must match the hardware used    
+                    pfNames: ["ens5f1"]
+                  nodeSelector:
+                    node-role.kubernetes.io/worker-du: ""
+                  numVfs: 4
+                  priority: 10
+                  resourceName: nic2port2

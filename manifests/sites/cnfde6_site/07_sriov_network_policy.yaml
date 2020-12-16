@@ -1,0 +1,99 @@
+apiVersion: policy.open-cluster-management.io/v1
+kind: Policy
+metadata:
+  name: policy-cnfde6-site-sriov-network
+  namespace: cnfde6-site-subscription
+  annotations:
+    policy.open-cluster-management.io/standards: NIST SP 800-53
+    policy.open-cluster-management.io/categories: CM Configuration Management
+    policy.open-cluster-management.io/controls: CM-2 Baseline Configuration
+spec:
+  remediationAction: enforce
+  disabled: false
+  policy-templates:
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-cnfde6-site-sriov-network-namespace
+        spec:
+          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: low
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["*"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: v1
+                kind: Namespace
+                metadata:
+                    name: cnfde6
+    - objectDefinition:
+        apiVersion: policy.open-cluster-management.io/v1
+        kind: ConfigurationPolicy
+        metadata:
+          name: policy-cnfde6-site-sriov-network
+        spec:
+          remediationAction: enforce # the policy-template spec.remediationAction is overridden by the preceding parameter value for spec.remediationAction.
+          severity: low
+          namespaceSelector:
+            exclude: ["kube-*"]
+            include: ["*"]
+          object-templates:
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetwork
+                metadata:
+                  name: nic1port1
+                  namespace: cnfde6
+                spec:
+                  ipam:  |
+                    {
+                    }
+                  networkNamespace: cnfde6
+                  resourceName: nic1port1
+                  vlan: 100
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetwork
+                metadata:
+                  name: nic1port2
+                  namespace: cnfde6
+                spec:
+                  ipam:  |
+                    {
+                    }
+                  networkNamespace: cnfde6
+                  resourceName: nic1port2
+                  vlan: 100
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetwork
+                metadata:
+                  name: nic2port1
+                  namespace: cnfde6
+                spec:
+                  ipam:  |
+                    {
+                    }
+                  networkNamespace: cnfde6
+                  resourceName: nic2port1
+                  vlan: 100
+            - complianceType: musthave
+              objectDefinition:
+                apiVersion: sriovnetwork.openshift.io/v1
+                kind: SriovNetwork
+                metadata:
+                  name: nic2port2
+                  namespace: cnfde6
+                spec:
+                  ipam:  |
+                    {
+                    }
+                  networkNamespace: cnfde6
+                  resourceName: nic2port2
+                  vlan: 100
